@@ -1,7 +1,13 @@
+'use strict';
+
 var imageStorage = [];
 var randomImages = [];
 var clickCounter = 0;
-var MAX_CLICK_COUNTER = 10;
+var MAX_CLICK_COUNTER = 25;
+
+var placeholder0 = document.getElementById('placeholder-0');
+var placeholder1 = document.getElementById('placeholder-1');
+var placeholder2 = document.getElementById('placeholder-2');
 
 function getRandomImageIndex() {
   return Math.floor(Math.random() * (imageStorage.length));
@@ -15,9 +21,20 @@ function select3ImagesAndRender() {
 
     if (!randomImages.includes(nextRandomValue)) {
       randomImages.push(nextRandomValue);
+    } else {
+      break;
     }
   }
+
+  // placeholder0 = document.getElementById('placeholder-0');
+  // placeholder1 = document.getElementById('placeholder-1');
+  // placeholder2 = document.getElementById('placeholder-2');
+
+  imageStorage[randomImages[0]].render(placeholder0);
+  imageStorage[randomImages[1]].render(placeholder1);
+  imageStorage[randomImages[2]].render(placeholder2);
 }
+
 
 var AllImages = function (name, picture) {
   this.name = name;
@@ -35,19 +52,6 @@ var AllImages = function (name, picture) {
   imageStorage.push(this);
 };
 
-var placeholder0 = document.getElementById('placeholder-0');
-var placeholder1 = document.getElementById('placeholder-1');
-var placeholder2 = document.getElementById('placeholder-2');
-// Invariants:
-// randomGoats has 3 goats!
-
-select3ImagesAndRender();
-
-
-imageStorage[randomImages[0]].render(placeholder0);
-imageStorage[randomImages[1]].render(placeholder1);
-imageStorage[randomImages[2]].render(placeholder2);
-
 var bag = new AllImages('bag', './images/bag.jpg');
 var banana = new AllImages('banana', './images/banana.jpg');
 var bathroom = new AllImages('bathroom', './images/bathroom.jpg');
@@ -62,10 +66,10 @@ var pen = new AllImages('pen', './images/pen.jpg');
 var petSweep = new AllImages('pet sweep', './images/pet-sweep.jpg');
 var scissors = new AllImages('scissors', './images/scissors.jpg');
 var shark = new AllImages('shark', './images/shark.jpg');
-var sweep = new AllImages('sweep', './images/sweep.jpg');
+var sweep = new AllImages('sweep', './images/sweep.png');
 var tauntaun = new AllImages('tauntaun', './images/tauntaun.jpg');
 var unicorn = new AllImages('unicorn', './images/unicorn.jpg');
-var usb = new AllImages('usb', './images/usb.jpg');
+var usb = new AllImages('usb', './images/usb.gif');
 var waterCan = new AllImages('water can', './images/water-can.jpg');
 var wineGlass = new AllImages('wine glass', './images/wine-glass.jpg');
 
@@ -90,8 +94,10 @@ function clickManager(event) {
   }
 }
 
+select3ImagesAndRender();
 
 
 placeholder0.addEventListener('click', clickManager);
 placeholder1.addEventListener('click', clickManager);
 placeholder2.addEventListener('click', clickManager);
+

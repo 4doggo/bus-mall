@@ -1,4 +1,5 @@
 'use strict';
+var IMAGE_DATA = 'imageData';
 
 var imageStorage = [];
 var randomImages = [];
@@ -49,30 +50,73 @@ var AllImages = function (name, picture) {
   this.render = function (domReference) {
     domReference.src = picture;
   };
+
+  this.loadData = function (data) {
+    this.timesClicked = data.timesClicked;
+    this.timesShown = data.timesShown;
+
+    this.name = data.name;
+    this.picture = data.picture;
+  };
+
   imageStorage.push(this);
 };
 
-var bag = new AllImages('bag', './images/bag.jpg');
-var banana = new AllImages('banana', './images/banana.jpg');
-var bathroom = new AllImages('bathroom', './images/bathroom.jpg');
-var boots = new AllImages('boots', './images/boots.jpg');
-var breakfast = new AllImages('breakfast', './images/breakfast.jpg');
-var bubblegum = new AllImages('bubblegum', './images/bubblegum.jpg');
-var chair = new AllImages('chair', './images/chair.jpg');
-var cthulhu = new AllImages('cthulhu', './images/cthulhu.jpg');
-var dogDuck = new AllImages('dog duck', './images/dog-duck.jpg');
-var dragon = new AllImages('dragon', './images/dragon.jpg');
-var pen = new AllImages('pen', './images/pen.jpg');
-var petSweep = new AllImages('pet sweep', './images/pet-sweep.jpg');
-var scissors = new AllImages('scissors', './images/scissors.jpg');
-var shark = new AllImages('shark', './images/shark.jpg');
-var sweep = new AllImages('sweep', './images/sweep.png');
-var tauntaun = new AllImages('tauntaun', './images/tauntaun.jpg');
-var unicorn = new AllImages('unicorn', './images/unicorn.jpg');
-var usb = new AllImages('usb', './images/usb.gif');
-var waterCan = new AllImages('water can', './images/water-can.jpg');
-var wineGlass = new AllImages('wine glass', './images/wine-glass.jpg');
 
+if (localStorage.getItem(IMAGE_DATA) === null) {
+  var bag = new AllImages('bag', './images/bag.jpg');
+  var banana = new AllImages('banana', './images/banana.jpg');
+  var bathroom = new AllImages('bathroom', './images/bathroom.jpg');
+  var boots = new AllImages('boots', './images/boots.jpg');
+  var breakfast = new AllImages('breakfast', './images/breakfast.jpg');
+  var bubblegum = new AllImages('bubblegum', './images/bubblegum.jpg');
+  var chair = new AllImages('chair', './images/chair.jpg');
+  var cthulhu = new AllImages('cthulhu', './images/cthulhu.jpg');
+  var dogDuck = new AllImages('dog duck', './images/dog-duck.jpg');
+  var dragon = new AllImages('dragon', './images/dragon.jpg');
+  var pen = new AllImages('pen', './images/pen.jpg');
+  var petSweep = new AllImages('pet sweep', './images/pet-sweep.jpg');
+  var scissors = new AllImages('scissors', './images/scissors.jpg');
+  var shark = new AllImages('shark', './images/shark.jpg');
+  var sweep = new AllImages('sweep', './images/sweep.png');
+  var tauntaun = new AllImages('tauntaun', './images/tauntaun.jpg');
+  var unicorn = new AllImages('unicorn', './images/unicorn.jpg');
+  var usb = new AllImages('usb', './images/usb.gif');
+  var waterCan = new AllImages('water can', './images/water-can.jpg');
+  var wineGlass = new AllImages('wine glass', './images/wine-glass.jpg');
+
+  // imageStorage.push(bag);
+  // imageStorage.push(banana);
+  // imageStorage.push(bathroom);
+  // imageStorage.push(boots);
+  // imageStorage.push(breakfast);
+  // imageStorage.push(bubblegum);
+  // imageStorage.push(chair);
+  // imageStorage.push(cthulhu);
+  // imageStorage.push(dogDuck);
+  // imageStorage.push(dragon);
+  // imageStorage.push(pen);
+  // imageStorage.push(petSweep);
+  // imageStorage.push(scissors);
+  // imageStorage.push(shark);
+  // imageStorage.push(sweep);
+  // imageStorage.push(tauntaun);
+  // imageStorage.push(unicorn);
+  // imageStorage.push(usb);
+  // imageStorage.push(waterCan);
+  // imageStorage.push(wineGlass);
+}
+else {
+  var jsonData = localStorage.getItem(IMAGE_DATA);
+  var data = JSON.parse(jsonData);
+
+  for (var i = 0; i < data.length; i++) {
+    var newImage = new AllImages('', '');
+
+    newImage.loadData(data[i]);
+    imageStorage.push(newImage);
+  }
+}
 function clickManager(event) {
   clickCounter++;
   if (clickCounter < MAX_CLICK_COUNTER) {
@@ -90,10 +134,17 @@ function clickManager(event) {
 
     select3ImagesAndRender();
   } else {
+    saveImageDataToLocalStorage();
     createImageChart();
   }
-}
 
+
+  function saveImageDataToLocalStorage() {
+    var jsonData = JSON.stringify(imageStorage);
+    localStorage.setItem(IMAGE_DATA, jsonData);
+
+  }
+}
 select3ImagesAndRender();
 
 
@@ -141,3 +192,4 @@ function createImageChart() {
     },
   });
 }
+

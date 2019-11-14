@@ -1,10 +1,10 @@
 'use strict';
 var IMAGE_DATA = 'imageData';
-
-var imageStorage = [];
 var randomImages = [];
+var imageStorage = [];
+var oldProducts = [];
 var clickCounter = 0;
-var MAX_CLICK_COUNTER = 25;
+var MAX_CLICK_COUNTER = 5;
 
 var placeholder0 = document.getElementById('placeholder-0');
 var placeholder1 = document.getElementById('placeholder-1');
@@ -20,22 +20,23 @@ function select3ImagesAndRender() {
   while (randomImages.length < 3) {
     var nextRandomValue = getRandomImageIndex();
 
-    if (!randomImages.includes(nextRandomValue)) {
+    if (!randomImages.includes(nextRandomValue) && !oldProducts.includes(nextRandomValue)) {
       randomImages.push(nextRandomValue);
     } else {
-      break;
+      getRandomImageIndex();
     }
   }
-
-  // placeholder0 = document.getElementById('placeholder-0');
-  // placeholder1 = document.getElementById('placeholder-1');
-  // placeholder2 = document.getElementById('placeholder-2');
+  // var placeholder0 = document.getElementById('placeholder-0');
+  // var placeholder1 = document.getElementById('placeholder-1');
+  // var placeholder2 = document.getElementById('placeholder-2');
 
   imageStorage[randomImages[0]].render(placeholder0);
   imageStorage[randomImages[1]].render(placeholder1);
   imageStorage[randomImages[2]].render(placeholder2);
+  oldProducts[0] = randomImages[0];
+  oldProducts[1] = randomImages[1];
+  oldProducts[2] = randomImages[2];
 }
-
 
 var AllImages = function (name, picture) {
   this.name = name;
@@ -59,9 +60,8 @@ var AllImages = function (name, picture) {
     this.picture = data.picture;
   };
 
-  imageStorage.push(this);
+  // imageStorage.push(this);
 };
-
 
 if (localStorage.getItem(IMAGE_DATA) === null) {
   var bag = new AllImages('bag', './images/bag.jpg');
@@ -85,28 +85,27 @@ if (localStorage.getItem(IMAGE_DATA) === null) {
   var waterCan = new AllImages('water can', './images/water-can.jpg');
   var wineGlass = new AllImages('wine glass', './images/wine-glass.jpg');
 
-  // imageStorage.push(bag);
-  // imageStorage.push(banana);
-  // imageStorage.push(bathroom);
-  // imageStorage.push(boots);
-  // imageStorage.push(breakfast);
-  // imageStorage.push(bubblegum);
-  // imageStorage.push(chair);
-  // imageStorage.push(cthulhu);
-  // imageStorage.push(dogDuck);
-  // imageStorage.push(dragon);
-  // imageStorage.push(pen);
-  // imageStorage.push(petSweep);
-  // imageStorage.push(scissors);
-  // imageStorage.push(shark);
-  // imageStorage.push(sweep);
-  // imageStorage.push(tauntaun);
-  // imageStorage.push(unicorn);
-  // imageStorage.push(usb);
-  // imageStorage.push(waterCan);
-  // imageStorage.push(wineGlass);
-}
-else {
+  imageStorage.push(bag);
+  imageStorage.push(banana);
+  imageStorage.push(bathroom);
+  imageStorage.push(boots);
+  imageStorage.push(breakfast);
+  imageStorage.push(bubblegum);
+  imageStorage.push(chair);
+  imageStorage.push(cthulhu);
+  imageStorage.push(dogDuck);
+  imageStorage.push(dragon);
+  imageStorage.push(pen);
+  imageStorage.push(petSweep);
+  imageStorage.push(scissors);
+  imageStorage.push(shark);
+  imageStorage.push(sweep);
+  imageStorage.push(tauntaun);
+  imageStorage.push(unicorn);
+  imageStorage.push(usb);
+  imageStorage.push(waterCan);
+  imageStorage.push(wineGlass);
+} else {
   var jsonData = localStorage.getItem(IMAGE_DATA);
   var data = JSON.parse(jsonData);
 
@@ -117,9 +116,11 @@ else {
     imageStorage.push(newImage);
   }
 }
+
 function clickManager(event) {
-  clickCounter++;
+  console.log(clickCounter);
   if (clickCounter < MAX_CLICK_COUNTER) {
+    clickCounter++;
     var imageIndex;
 
     if (event.target.id === 'placeholder-0') {
@@ -138,15 +139,13 @@ function clickManager(event) {
     createImageChart();
   }
 
-
   function saveImageDataToLocalStorage() {
     var jsonData = JSON.stringify(imageStorage);
     localStorage.setItem(IMAGE_DATA, jsonData);
-
   }
 }
-select3ImagesAndRender();
 
+select3ImagesAndRender();
 
 placeholder0.addEventListener('click', clickManager);
 placeholder1.addEventListener('click', clickManager);
